@@ -242,9 +242,8 @@ public static void method2() {
 
 4、如果CAS失败，有两种情况  
 a. 如果是其他线程已经持有了该Object的轻量级锁，这时表明有竞争，进入所膨胀过程   
-b. 如果是自己执行了synchronized锁重入，那么在添加一条Lock Record 作为重入的计数
-![img_7.png](img_7.png)
-
+b. 如果是自己执行了synchronized锁重入，那么在添加一条Lock Record 作为重入的计数    
+![img_7.png](img_7.png)     
 c. 当退出synchronized 代码块(解锁时)，如果有取值为null的记录，表示有重入，这时重置锁记录，表示重入计数减一
 ![img_8.png](img_8.png)   
 5、 当退出synchronized代码块(解锁时)，锁记录的值不为null，这时使用cas 将Mark Word的值恢复给对象头  
