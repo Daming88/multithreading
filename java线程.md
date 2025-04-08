@@ -207,7 +207,7 @@ Monitor对象结构：
 > > <font color="red">2、不加synchronized的对象不会关联监视器，不遵从以上规则 </font>
 ---
 ## synchronized 优化原理   
-轻量级锁  
+1.轻量级锁  
 轻量级锁的使用场景：如果一个对象虽然有多线程访问，但多线程访问的时间是错开的(也就是没有竞争)，那么可以使用轻量级锁来优化   
 轻量级锁对使用者是透明的，即语法仍然是synchronized    
 
@@ -227,7 +227,6 @@ public static void method2() {
     }
 }
 ```
-
 1、 创建锁记录对象，每个线程的栈帧都存在一种锁记录的结构，内部可以存储锁定对象的Mark Word    
 ![img_4.png](img_4.png)    
 2、 让锁记录中Object reference 指向锁对象，并尝试用cas替换Object的Mark Word ，将Mark Word 的值存入锁记录  
@@ -243,7 +242,6 @@ c. 当退出synchronized 代码块(解锁时)，如果有取值为null的记录�
 5、 当退出synchronized代码块(解锁时)，锁记录的值不为null，这时使用cas 将Mark Word的值恢复给对象头  
 a. 成功则解锁成功  
 b. 失败，说明轻量级锁进入锁膨胀或者已经升级为重量级锁，进入重量级锁的解锁流程
----
 
 2. 锁膨胀   
 
@@ -270,7 +268,6 @@ b. 然后自己进入到Monitor的 EntryList 中BLOCKED（阻塞）
 3、当 Thread-0 退出同步块解锁时，使用cas将Mark Word 的值恢复给对象头，失败。    
 这时会进入重量级解锁流程，即按照Monitor地址找到Monitor对象，设置Owner为null，     
 唤醒EntryList 中 BLOCKED线程   
----
 
 3. 自旋优化
 
@@ -347,7 +344,6 @@ public static void method3() {
 2、blocked 和waiting的线程都是处于阻塞状态，不占用CPU时间片    
 3、blocked线程会在Owner线程释放时唤醒     
 4、waiting线程在Owner线程调用notify/notifyAll时唤醒，但唤醒后并不意味着立刻获得锁，仍需要进入entryList中重新竞争。   
----
 
 ## 同步模式之保护性暂停
 
