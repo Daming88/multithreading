@@ -1,55 +1,56 @@
 # 目录
 
-## 1. 创建和运行线程
-- 1.1 直接使用 Thread
-- 1.2 使用 Runnable 接口
-- 1.3 使用 FutureTask 配合 Thread
+## [1. 创建和运行线程](#1-创建和运行线程)
+- [1.1 直接使用 Thread](#11-直接使用-thread)
+- [1.2 使用 Runnable 接口](#12-使用-runnable-接口)
+- [1.3 使用 FutureTask 配合 Thread](#13-使用-futuretask-配合-thread)
 
-## 2. 查看进程和线程的方法
-- 2.1 Linux 命令
-- 2.2 JConsole 监控
+## [2. 查看进程和线程的方法](#2-查看进程和线程的方法)
+- [2.1 Linux 命令](#21-linux-命令)
+- [2.2 JConsole 监控](#22-jconsole-监控)
 
-## 3. start 和 run 方法
+## [3. start 和 run 方法](#3-start-和-run-方法)
 
-## 4. sleep 与 yield
-- 4.1 sleep 方法特性
-- 4.2 yield 方法特性
+## [4. sleep 与 yield](#4-sleep-与-yield)
+- [4.1 sleep 方法特性](#41-sleep-方法特性)
+- [4.2 yield 方法特性](#42-yield-方法特性)
 
-## 5. 共享模型之管程
-- 5.1 共享问题
-- 5.2 synchronized 同步机制
-    - 5.2.1 代码块同步
-    - 5.2.2 方法同步（实例方法/静态方法）
-- 5.3 线程安全分析
-- 5.4 Java 对象头
-- 5.5 Monitor 机制
+## [5. 共享模型之管程](#5-共享模型之管程)
+- [5.1 共享问题](#51-共享问题)
+- [5.2 synchronized 同步机制](#52-synchronized-同步机制)
+   - [5.2.1 代码块同步](#521-代码块同步)
+   - [5.2.2 方法同步](#522-方法同步)
+- [5.3 线程安全分析](#53-线程安全分析)
+- [5.4 Java 对象头](#54-java-对象头)
+- [5.5 Monitor 机制](#55-monitor-机制)
 
-## 6. synchronized 优化原理
-- 6.1 轻量级锁
-- 6.2 锁膨胀
-- 6.3 自旋优化
-- 6.4 偏向锁
-    - 6.4.1 偏向状态
+## [6. synchronized 优化原理](#6-synchronized-优化原理)
+- [6.1 轻量级锁](#61-轻量级锁)
+- [6.2 锁膨胀](#62-锁膨胀)
+- [6.3 自旋优化](#63-自旋优化)
+- [6.4 偏向锁](#64-偏向锁)
+   - [6.4.1 偏向状态](#641-偏向状态)
 
-## 7. wait/notify
-- 7.1 等待/通知机制
-- 7.2 同步模式之保护性暂停
+## [7. wait/notify](#7-waitnotify)
+- [7.1 等待/通知机制](#71-等待通知机制)
+- [7.2 同步模式之保护性暂停](#72-同步模式之保护性暂停)
 
-## 8. ReentrantLock
-- 8.1 特性对比（vs synchronized）
-- 8.2 可重入性
-- 8.3 可打断性
-- 8.4 锁超时
-- 8.5 公平锁
-- 8.6 条件变量
+## [8. ReentrantLock](#8-reentrantlock)
+- [8.1 特性对比（vs synchronized）](#81-特性对比vs-synchronized)
+- [8.2 可重入性](#82-可重入性)
+- [8.3 可打断性](#83-可打断性)
+- [8.4 锁超时](#84-锁超时)
+- [8.5 公平锁](#85-公平锁)
+- [8.6 条件变量](#86-条件变量)
 
-## 9. 原理分析
-- 9.1 join 原理
-- 9.2 Monitor 工作原理
+## [9. 原理分析](#9-原理分析)
+- [9.1 join 原理](#91-join-原理)
+- [9.2 Monitor 工作原理](#92-monitor-工作原理)
 
-## 附录
-- 代码示例链接
-- 相关示意图（img.png 等）
+## [附录](#附录)
+- [代码示例链接](#代码示例链接)
+- [相关示意图](#相关示意图)
+
 
 ## 创建和运行线程
 
@@ -251,17 +252,16 @@ Monitor对象结构：
 > 1、刚开始Monitor中Owner为努力了   
 > 2、当线程Thread2执行synchronized(obj)就会将Monitor的所有者设置为Thread2，Monitor中只能有一个Owner    
 > 3、在线程Thread2上锁过程，如果其他线程也来执行synchronized(obj),就会进入 EntryList队列中进入 BLOCKED 状态   
-> 4、图中Thread-0和Thread-1是属于之前获取过锁，然后释放锁的线程，但条件不满足进入 waiting 状态的线程，后面的 wait-notify会分析  
+> 4、图中Thread-0和Thread-1是属于之前获取过锁，然后释放锁的线程，但条件不满足进入 waiting 状态的线程，后面的 wait-notify会分析
 
 > <font color="red">注意</font>
 >> <font color="red">1、synchronized 必须是进入同一个对象的monitor才有上述的效果</font>   
 > > <font color="red">2、不加synchronized的对象不会关联监视器，不遵从以上规则 </font>
 ---
-## synchronized 优化原理   
-
-轻量级锁  
+## synchronized 优化原理
+1.轻量级锁  
 轻量级锁的使用场景：如果一个对象虽然有多线程访问，但多线程访问的时间是错开的(也就是没有竞争)，那么可以使用轻量级锁来优化   
-轻量级锁对使用者是透明的，即语法仍然是synchronized    
+轻量级锁对使用者是透明的，即语法仍然是synchronized
 
 ```java
 static final Object obj = new Object();
@@ -279,7 +279,6 @@ public static void method2() {
     }
 }
 ```
-
 1、 创建锁记录对象，每个线程的栈帧都存在一种锁记录的结构，内部可以存储锁定对象的Mark Word    
 ![img_4.png](img_4.png)    
 2、 让锁记录中Object reference 指向锁对象，并尝试用cas替换Object的Mark Word ，将Mark Word 的值存入锁记录  
@@ -295,9 +294,8 @@ c. 当退出synchronized 代码块(解锁时)，如果有取值为null的记录�
 5、 当退出synchronized代码块(解锁时)，锁记录的值不为null，这时使用cas 将Mark Word的值恢复给对象头  
 a. 成功则解锁成功  
 b. 失败，说明轻量级锁进入锁膨胀或者已经升级为重量级锁，进入重量级锁的解锁流程
----
 
-2. 锁膨胀   
+2. 锁膨胀
 
 > 如果在尝试加轻量级锁的过程种，CAS操作无法成功，这时是有其他线程为此对象加上了轻量级锁(有竞争)  
 > 这时需要进行锁膨胀，将轻量级锁变为重量级锁
@@ -317,12 +315,11 @@ public static void method1() {
 2、这时Thread-1加轻量级锁失败，进入锁膨胀流程      
 a. 即为Object对象申请Monitor锁，让Object指向重量级锁地址       
 b. 然后自己进入到Monitor的 EntryList 中BLOCKED（阻塞）  
-![img_10.png](img_10.png)   
+![img_10.png](img_10.png)
 
 3、当 Thread-0 退出同步块解锁时，使用cas将Mark Word 的值恢复给对象头，失败。    
 这时会进入重量级解锁流程，即按照Monitor地址找到Monitor对象，设置Owner为null，     
-唤醒EntryList 中 BLOCKED线程   
----
+唤醒EntryList 中 BLOCKED线程
 
 3. 自旋优化
 
@@ -391,15 +388,14 @@ public static void method3() {
 > > 3、如果关闭偏向锁，那么Mark Word 值为 0x01 即最后三位为001，这时thread、epoch、age都是0,  
 > > 第一次hashcode时才会赋值
 ---
-## wait/notify    
+## wait/notify
 结构图：
 ![img_16.png](img_16.png)
 
 1、Owner线程发现条件不满足，调用wait方法，即可进入waitSet变成waiting状态    
 2、blocked 和waiting的线程都是处于阻塞状态，不占用CPU时间片    
 3、blocked线程会在Owner线程释放时唤醒     
-4、waiting线程在Owner线程调用notify/notifyAll时唤醒，但唤醒后并不意味着立刻获得锁，仍需要进入entryList中重新竞争。   
----
+4、waiting线程在Owner线程调用notify/notifyAll时唤醒，但唤醒后并不意味着立刻获得锁，仍需要进入entryList中重新竞争。
 
 ## 同步模式之保护性暂停
 
@@ -466,7 +462,7 @@ public static void method1() {
 [锁超时的示例代码](src/main/java/com/daming/multithreading/Test24.java)
 
 ---
-公平锁   
+公平锁
 > ReentrantLock默认是非公平锁，  
 > 非公平锁会先尝试获取锁，如果获取失败，再进入等待队列
 
@@ -474,7 +470,7 @@ public static void method1() {
 ---
 条件变量
 > synchronized中也存在条件变量，就是原理中的waitSet休息室，当条件不满足的时候进入waitSet中等待  
-> ReentrantLock的条件变量比synchronized强，它允许多个条件变量就好比  
+> ReentrantLock的条件变量比synchronized强，它允许多个条件变量就好比
 >> synchronized是哪些不满足条件的线程都在一个休息间等消息  
 >> ReentrantLock是多个条件变量，也就是类似存在多个休息室，唤醒时也是按照相应的条件(休息室)来唤醒
 
@@ -487,4 +483,3 @@ public static void method1() {
 [条件变量的示例代码](src/main/java/com/daming/multithreading/Test25.java)
 
 ---
-
