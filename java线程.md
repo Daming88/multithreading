@@ -205,7 +205,7 @@ Monitor对象结构：
 > <font color="red">注意</font>
 >> <font color="red">1、synchronized 必须是进入同一个对象的monitor才有上述的效果</font>   
 > > <font color="red">2、不加synchronized的对象不会关联监视器，不遵从以上规则 </font>
-
+---
 ## synchronized 优化原理  
 1. 轻量级锁  
 轻量级锁的使用场景：如果一个对象虽然有多线程访问，但多线程访问的时间是错开的(也就是没有竞争)，那么可以使用轻量级锁来优化   
