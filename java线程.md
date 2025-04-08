@@ -230,16 +230,12 @@ public static void method2() {
 }
 ```
 
----
-1、 创建锁记录对象，每个线程的栈帧都存在一种锁记录的结构，内部可以存储锁定对象的Mark Word
-![img_4.png](img_4.png)
-
+1、 创建锁记录对象，每个线程的栈帧都存在一种锁记录的结构，内部可以存储锁定对象的Mark Word    
+![img_4.png](img_4.png)    
 2、 让锁记录中Object reference 指向锁对象，并尝试用cas替换Object的Mark Word ，将Mark Word 的值存入锁记录  
-![img_5.png](img_5.png)
-
-3、如果CAS替换成功，对象头中存储了锁记录地址和状态00，表示由该线程给对象加锁
-![img_6.png](img_6.png)
-
+![img_5.png](img_5.png)   
+3、如果CAS替换成功，对象头中存储了锁记录地址和状态00，表示由该线程给对象加锁   
+![img_6.png](img_6.png)   
 4、如果CAS失败，有两种情况  
 a. 如果是其他线程已经持有了该Object的轻量级锁，这时表明有竞争，进入所膨胀过程   
 b. 如果是自己执行了synchronized锁重入，那么在添加一条Lock Record 作为重入的计数    
