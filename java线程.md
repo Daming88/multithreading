@@ -200,16 +200,17 @@ Monitor对象结构：
 > 1、刚开始Monitor中Owner为努力了   
 > 2、当线程Thread2执行synchronized(obj)就会将Monitor的所有者设置为Thread2，Monitor中只能有一个Owner    
 > 3、在线程Thread2上锁过程，如果其他线程也来执行synchronized(obj),就会进入 EntryList队列中进入 BLOCKED 状态   
-> 4、图中Thread-0和Thread-1是属于之前获取过锁，然后释放锁的线程，但条件不满足进入 waiting 状态的线程，后面的 wait-notify会分析
----
+> 4、图中Thread-0和Thread-1是属于之前获取过锁，然后释放锁的线程，但条件不满足进入 waiting 状态的线程，后面的 wait-notify会分析  
+
 > <font color="red">注意</font>
 >> <font color="red">1、synchronized 必须是进入同一个对象的monitor才有上述的效果</font>   
 > > <font color="red">2、不加synchronized的对象不会关联监视器，不遵从以上规则 </font>
 ---
-## synchronized 优化原理  
-1. 轻量级锁  
+## synchronized 优化原理   
+轻量级锁  
 轻量级锁的使用场景：如果一个对象虽然有多线程访问，但多线程访问的时间是错开的(也就是没有竞争)，那么可以使用轻量级锁来优化   
 轻量级锁对使用者是透明的，即语法仍然是synchronized    
+
 ```java
 static final Object obj = new Object();
 
@@ -226,6 +227,7 @@ public static void method2() {
     }
 }
 ```
+
 1、 创建锁记录对象，每个线程的栈帧都存在一种锁记录的结构，内部可以存储锁定对象的Mark Word    
 ![img_4.png](img_4.png)    
 2、 让锁记录中Object reference 指向锁对象，并尝试用cas替换Object的Mark Word ，将Mark Word 的值存入锁记录  
