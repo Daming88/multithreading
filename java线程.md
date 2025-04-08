@@ -208,9 +208,7 @@ Monitor对象结构：
 
 ## synchronized 优化原理
 
-1. 轻量级锁
-
----
+1. 轻量级锁  
 轻量级锁的使用场景：如果一个对象虽然有多线程访问，但多线程访问的时间是错开的(也就是没有竞争)，那么可以使用轻量级锁来优化   
 轻量级锁对使用者是透明的，即语法仍然是synchronized
 ---
@@ -248,14 +246,13 @@ b. 如果是自己执行了synchronized锁重入，那么在添加一条Lock Rec
 ![img_7.png](img_7.png)
 
 c. 当退出synchronized 代码块(解锁时)，如果有取值为null的记录，表示有重入，这时重置锁记录，表示重入计数减一
-![img_8.png](img_8.png)
-
+![img_8.png](img_8.png)   
 5、 当退出synchronized代码块(解锁时)，锁记录的值不为null，这时使用cas 将Mark Word的值恢复给对象头  
 a. 成功则解锁成功  
 b. 失败，说明轻量级锁进入锁膨胀或者已经升级为重量级锁，进入重量级锁的解锁流程
 ---
 
-2. 锁膨胀
+2. 锁膨胀   
 
 > 如果在尝试加轻量级锁的过程种，CAS操作无法成功，这时是有其他线程为此对象加上了轻量级锁(有竞争)  
 > 这时需要进行锁膨胀，将轻量级锁变为重量级锁
@@ -269,19 +266,17 @@ public static void method1() {
     }
 }
 ```
-
----
-1、当Thread-1 进行轻量级加锁时，Thread-0已经对该对象加了轻量级锁
+1、当Thread-1 进行轻量级加锁时，Thread-0已经对该对象加了轻量级锁   
 ![img_9.png](img_9.png)
 
-2、这时Thread-1加轻量级锁失败，进入锁膨胀流程   
-a. 即为Object对象申请Monitor锁，让Object指向重量级锁地址    
-b. 然后自己进入到Monitor的 EntryList 中BLOCKED（阻塞）
-![img_10.png](img_10.png)
+2、这时Thread-1加轻量级锁失败，进入锁膨胀流程      
+a. 即为Object对象申请Monitor锁，让Object指向重量级锁地址       
+b. 然后自己进入到Monitor的 EntryList 中BLOCKED（阻塞）  
+![img_10.png](img_10.png)   
 
-3、当 Thread-0 退出同步块解锁时，使用cas将Mark Word 的值恢复给对象头，失败。  
-这时会进入重量级解锁流程，即按照Monitor地址找到Monitor对象，设置Owner为null，  
-唤醒EntryList 中 BLOCKED线程
+3、当 Thread-0 退出同步块解锁时，使用cas将Mark Word 的值恢复给对象头，失败。    
+这时会进入重量级解锁流程，即按照Monitor地址找到Monitor对象，设置Owner为null，     
+唤醒EntryList 中 BLOCKED线程   
 ---
 
 3. 自旋优化
@@ -330,9 +325,8 @@ public static void method3() {
         // 同步代码块 3
     }
 }
-```
+```   
 
----
 流程如下：
 ![img_13.png](img_13.png)
 
@@ -352,19 +346,15 @@ public static void method3() {
 > > 3、如果关闭偏向锁，那么Mark Word 值为 0x01 即最后三位为001，这时thread、epoch、age都是0,  
 > > 第一次hashcode时才会赋值
 ---
-
-## wait/notify
-
+## wait/notify    
 结构图：
 ![img_16.png](img_16.png)
 
-1、Owner线程发现条件不满足，调用wait方法，即可进入waitSet变成waiting状态  
-2、blocked 和waiting的线程都是处于阻塞状态，不占用CPU时间片  
-3、blocked线程会在Owner线程释放时唤醒   
-4、waiting线程在Owner线程调用notify/notifyAll时唤醒，但唤醒后并不意味着立刻获得锁，仍需要进入entryList中重新竞争。
+1、Owner线程发现条件不满足，调用wait方法，即可进入waitSet变成waiting状态    
+2、blocked 和waiting的线程都是处于阻塞状态，不占用CPU时间片    
+3、blocked线程会在Owner线程释放时唤醒     
+4、waiting线程在Owner线程调用notify/notifyAll时唤醒，但唤醒后并不意味着立刻获得锁，仍需要进入entryList中重新竞争。   
 ---
-1、API介绍   
-a. object
 
 ## 同步模式之保护性暂停
 
