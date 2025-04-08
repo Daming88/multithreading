@@ -24,18 +24,18 @@
 - [5.4 Java 对象头](#Java对象头)
 - [5.5 Monitor 机制](#Monitor)
 
-## [6. synchronized 优化原理](#synchronized 优化原理)
+## [6. synchronized 优化原理](#synchronized优化原理)
 - [6.1 轻量级锁](#轻量级锁)
 - [6.2 锁膨胀](#锁膨胀)
 - [6.3 自旋优化](#自旋优化)
 - [6.4 偏向锁](#偏向锁)
    - [6.4.1 偏向状态](#偏向状态)
 
-## [7. wait/notify](#wait/notify)
+## [7. wait/notify](#wait和notify)
 - [7.1 等待/通知机制](#71-等待通知机制)
 - [7.2 同步模式之保护性暂停](#同步模式之保护性暂停)
 
-## [8. ReentrantLock](#ReentrantLock)
+## [8. ReentrantLock简单解析](#ReentrantLock简单解析)
 - [8.1 特性对比（vs synchronized）](#81-特性对比vs-synchronized)
 - [8.2 可重入性](#可重入)
 - [8.3 可打断性](#可打断)
@@ -254,7 +254,7 @@ Monitor对象结构：
 >> <font color="red">1、synchronized 必须是进入同一个对象的monitor才有上述的效果</font>   
 > > <font color="red">2、不加synchronized的对象不会关联监视器，不遵从以上规则 </font>
 ---
-## synchronized 优化原理
+## synchronized优化原理
 1.轻量级锁  
 轻量级锁的使用场景：如果一个对象虽然有多线程访问，但多线程访问的时间是错开的(也就是没有竞争)，那么可以使用轻量级锁来优化   
 轻量级锁对使用者是透明的，即语法仍然是synchronized
@@ -384,7 +384,7 @@ public static void method3() {
 > > 3、如果关闭偏向锁，那么Mark Word 值为 0x01 即最后三位为001，这时thread、epoch、age都是0,  
 > > 第一次hashcode时才会赋值
 ---
-## wait/notify
+## wait和notify
 结构图：
 ![img_16.png](img_16.png)
 
@@ -405,8 +405,7 @@ public static void method3() {
 ![示例代码](src/main/java/com/daming/multithreading/Test20.java)
 
 
-## ReentrantLock
----
+## ReentrantLock简单解析
 相对于synchronized它具有以下特点：    
 1、可中断   
 2、可以设置超时时间   
