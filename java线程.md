@@ -1,51 +1,47 @@
 # 目录
 
-## [1. 创建和运行线程](#1-创建和运行线程)
-- [1.1 直接使用 Thread](#11-直接使用-thread)
-- [1.2 使用 Runnable 接口](#12-使用-runnable-接口)
-- [1.3 使用 FutureTask 配合 Thread](#13-使用-futuretask-配合-thread)
+## [1. 创建和运行线程](#创建和运行线程)
+- [1.1 直接使用 Thread](#直接使用Thread)
+- [1.2 使用 Runnable 接口](#使用Runnable接口)
+- [1.3 使用 FutureTask 配合 Thread](#使用FutureTask配合Thread)
 
-## [2. 查看进程和线程的方法](#2-查看进程和线程的方法)
-- [2.1 Linux 命令](#21-linux-命令)
-- [2.2 JConsole 监控](#22-jconsole-监控)
+## [2. 查看进程和线程的方法](#查看进程和线程的方法)
+- [2.1 Linux 命令](#linux命令)
+- [2.2 JConsole 监控](#jconsole-监控)
 
-## [3. start 和 run 方法](#3-start-和-run-方法)
+## [3. start 和 run 方法](#start和run方法)
 
-## [4. sleep 与 yield](#4-sleep-与-yield)
+## [4. sleep 与 yield](#sleep与yield)
 - [4.1 sleep 方法特性](#41-sleep-方法特性)
 - [4.2 yield 方法特性](#42-yield-方法特性)
 
-## [5. 共享模型之管程](#5-共享模型之管程)
-- [5.1 共享问题](#51-共享问题)
+## [5. 共享模型之管程](#共享模型之管程)
+- [5.1 共享问题](#共享问题)
 - [5.2 synchronized 同步机制](#52-synchronized-同步机制)
    - [5.2.1 代码块同步](#521-代码块同步)
    - [5.2.2 方法同步](#522-方法同步)
-- [5.3 线程安全分析](#53-线程安全分析)
-- [5.4 Java 对象头](#54-java-对象头)
-- [5.5 Monitor 机制](#55-monitor-机制)
+- [5.3 线程安全分析](#线程安全分析)
+- [5.4 Java 对象头](#Java对象头)
+- [5.5 Monitor 机制](#Monitor)
 
-## [6. synchronized 优化原理](#6-synchronized-优化原理)
-- [6.1 轻量级锁](#61-轻量级锁)
-- [6.2 锁膨胀](#62-锁膨胀)
-- [6.3 自旋优化](#63-自旋优化)
-- [6.4 偏向锁](#64-偏向锁)
-   - [6.4.1 偏向状态](#641-偏向状态)
+## [6. synchronized 优化原理](#synchronized 优化原理)
+- [6.1 轻量级锁](#轻量级锁)
+- [6.2 锁膨胀](#锁膨胀)
+- [6.3 自旋优化](#自旋优化)
+- [6.4 偏向锁](#偏向锁)
+   - [6.4.1 偏向状态](#偏向状态)
 
-## [7. wait/notify](#7-waitnotify)
+## [7. wait/notify](#wait/notify)
 - [7.1 等待/通知机制](#71-等待通知机制)
-- [7.2 同步模式之保护性暂停](#72-同步模式之保护性暂停)
+- [7.2 同步模式之保护性暂停](#同步模式之保护性暂停)
 
-## [8. ReentrantLock](#8-reentrantlock)
+## [8. ReentrantLock](#ReentrantLock)
 - [8.1 特性对比（vs synchronized）](#81-特性对比vs-synchronized)
-- [8.2 可重入性](#82-可重入性)
-- [8.3 可打断性](#83-可打断性)
-- [8.4 锁超时](#84-锁超时)
-- [8.5 公平锁](#85-公平锁)
-- [8.6 条件变量](#86-条件变量)
-
-## [9. 原理分析](#9-原理分析)
-- [9.1 join 原理](#91-join-原理)
-- [9.2 Monitor 工作原理](#92-monitor-工作原理)
+- [8.2 可重入性](#可重入)
+- [8.3 可打断性](#可打断)
+- [8.4 锁超时](#锁超时)
+- [8.5 公平锁](#公平锁)
+- [8.6 条件变量](#条件变量)
 
 ## [附录](#附录)
 - [代码示例链接](#代码示例链接)
@@ -124,7 +120,7 @@ println("result="+result);
 
 ## 查看进程和线程的方法
 
-linux
+linux命令
 
 ```bash
 # 查看所有进程
@@ -133,7 +129,7 @@ ps -fe
 ps -ft -p <PID> 
 ```
 
-jconsole来查看某个Java进程中线程的运行情况(图形界面)
+jconsole-监控
 
 ```bash
 java -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1888 -Dcom.sun.management.jmxremote.rmi.port=1888  -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=192.168.1.146 Test5
@@ -408,10 +404,6 @@ public static void method3() {
 
 ![示例代码](src/main/java/com/daming/multithreading/Test20.java)
 
-## 原理join
-
-> join的原理是一个线程等待另一个线程的结束
->
 
 ## ReentrantLock
 ---
