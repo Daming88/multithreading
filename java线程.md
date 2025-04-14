@@ -104,9 +104,7 @@ FutureTask<Integer> task = new FutureTask<Integer>(() -> {
 });
 
 // 参数1是任务对象，参数2是线程名字
-new
-
-Thread(task, "t1").
+new Thread(task, "t1").
 
 start();
 
